@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Main">
+	<insert id="registerOK" parameterType="main"
+		useGeneratedKeys="true" keyProperty="NNUM">
+    
+		INSERT INTO MAIN VALUES( MAIN_SEQ.nextval,
+		#{KNAME},#{ENAME},#{CNAME},#{BNUMBER},#{BNUMBER1},#{MEMBERIMG},#{YEAR},#{MONTH},#{DAY},#{BIRTH},#{GENDER},#{MERRY},#{CAREER},#{SALARY},
+		#{HOPE},#{CONDITION},#{ADDRESS},#{PHONE},#{EMAIL},#{GRADE},#{ALCOHOL}
+		)
+		<selectKey keyProperty="MNUM" resultType="int" order="AFTER">
+			SELECT MAIN_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+     
+	<select id="mainLI" parameterType="page" resultType="main">
+		 select b.* from (select rownum rn, a.* from(select n.* from MAIN n  
+		 <if test="searchType != ''">
+		 where
+		<!-- <if test="searchType.equals('ALL')">  select의 네임이 searchType이 ALL의 옵션을 선택시
+		 KNAME || GENDER || GRADE || CAREER || BNUMBER || BNUMBER1 || CONDITION</if>     -->     <!-- 목록에있는 조건 하나라도 포함시 검색 -->
+		 <if test="searchType.equals('KNAME')">
+		 KNAME </if> 
+		 <if test="searchType.equals('GENDER')">
+		 GENDER </if>
+		 <if test="searchType.equals('GRADE')">
+		 GRADE </if>
+		 LIKE '%'||#{keyword}||'%'            <!-- 선택된 옵션의 LIKE '%'||#{keyword}||'%'를 검색  -->
+		 </if>
+		 ORDER BY mnum desc) a) b where rn BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="listCount" resultType="int" parameterType="page">
+		SELECT COUNT(*) FROM (select rownum rn, a.* from(select n.* from MAIN n   
+		<if test="searchType != ''">
+		 where
+		<!--  <if test="searchType.equals('ALL')">
+		 KNAME || GENDER || GRADE</if> -->
+		 <if test="searchType.equals('KNAME')">
+		 KNAME</if>
+		 <if test="searchType.equals('GENDER')">
+		 GENDER</if>
+		 <if test="searchType.equals('GRADE')">
+		 GRADE</if>
+		 LIKE '%'||#{keyword}||'%'
+		 </if>
+		 ORDER BY mnum desc) a)
+	</select>
+    
+	<delete id="delete" parameterType="main">
+		DELETE FROM MAIN WHERE BNUMBER=#{BNUMBER}
+	</delete>
+	<select id="detail" parameterType="main" resultType="main">
+		SELECT * FROM MAIN WHERE BNUMBER=#{BNUMBER}
+	</select>
+	<select id="modify" parameterType="String" resultType="main">
+		SELECT * FROM MAIN WHERE BNUMBER=#{BNUMBER}
+	</select>
+	
+	<update id="modifyOk" parameterType="main">
+		UPDATE MAIN SET KNAME=#{KNAME}, ENAME=#{ENAME},
+		CNAME=#{CNAME},MEMBERIMG=#{MEMBERIMG},GENDER=#{GENDER},
+		MERRY=#{MERRY}, CAREER=#{CAREER}, SALARY=#{SALARY}, HOPE=#{HOPE},
+		CONDITION=#{CONDITION},
+		ADDRESS=#{ADDRESS}, PHONE=#{PHONE}, EMAIL=#{EMAIL}, GRADE=#{GRADE}, ALCOHOL=#{ALCOHOL}
+		WHERE BNUMBER=#{BNUMBER}
+	</update>
+</mapper>
