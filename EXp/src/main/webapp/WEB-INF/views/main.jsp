@@ -465,7 +465,8 @@ input.btnComnblue
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 <script>
-/* function sendDel() {
+
+function sendDel() {
 	if($('input:checkbox[name="checkbox"]').is(":checked")) { // 체크박스 타입의 인풋박스가 checkbox의 체크된 네임을 선택시.
 		value= $('input:checkbox:checked').val(); // value에 인풋박스에 타입의 네임인 체크된 checkbox의 val를 저장한다.
 		
@@ -490,8 +491,8 @@ input.btnComnblue
 		} 
 
 
-} */
-function sendDel() {
+}
+/* function sendDel() {
 	if(confirm("삭제하시겠습니까?")){
 	if($('input[name="checkbox"]:checked').each(function() {
 		var test = $(this).val();
@@ -502,7 +503,7 @@ function sendDel() {
 		return false;
 	}
 }
-
+ */
 function sendMo() {
 	
 		if ($('input[name="checkbox"]').is(":checked")) {
